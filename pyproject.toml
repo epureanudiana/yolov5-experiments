@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "yolov5-experiments"
+version = "0.1.0"
+description = ""
+authors = ["Diana <epureanudiana13@gmail.com>"]
+readme = "README.md"
+packages = [{include = "yolov5_experiments"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+ultralytics = "^8.0.49"
+opencv-python = "^4.7.0.72"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
