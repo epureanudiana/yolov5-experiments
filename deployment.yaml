@@ -11,15 +11,21 @@ variables:
   containerRegistry: 'docker.io'
 
 steps:
-- script: |
-    echo 'Starting the Docker build...'
-    docker build --rm --tag $(imageRepository) .
-  displayName: 'Docker Build'
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    containerRegistry: $(dockerRegistryServiceConnection)
+    repository: $(imageRepository)
+    Dockerfile: app.Dockerfile
+    buildContext: .
+    tags: 'latest'
 
 - task: Docker@2
   displayName: 'Push Docker Image'
   inputs:
     containerRegistry: $(dockerRegistryServiceConnection)
     repository: $(imageRepository)
+    Dockerfile: app.Dockerfile
+    buildContext: .
     command: 'push'
     tags: 'latest'
