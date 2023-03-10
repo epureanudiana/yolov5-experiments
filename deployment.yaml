@@ -11,11 +11,6 @@ variables:
   containerRegistry: 'docker.io'
 
 steps:
-- task: CommandLine@2
-  inputs:
-    script: 'docker login -u $(DOCKERHUB_USERNAME) -p $(DOCKERHUB_PASSWORD)'
-    addSpnToEnvironment: true
-
 - task: Docker@2
   displayName: 'Build Docker Image'
   inputs:
