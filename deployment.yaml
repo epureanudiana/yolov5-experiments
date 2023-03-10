@@ -8,7 +8,8 @@ variables:
   # Docker Hub credentials
   dockerRegistryServiceConnection: 'dockerhub_connection'
   imageRepository: 'epureanudiana/app'
-  containerRegistry: 'docker.io'
+  dockerfileName: 'app.Dockerfile'
+
 
 steps:
 - task: Docker@2
@@ -25,7 +26,16 @@ steps:
   inputs:
     containerRegistry: $(dockerRegistryServiceConnection)
     repository: $(imageRepository)
-    Dockerfile: app.Dockerfile
+    Dockerfile: $(dockerfileName)
     buildContext: .
     command: 'push'
     tags: 'latest'
+
+- task: Docker@2
+  displayName: 'Run Docker Image'
+  inputs:
+    containerRegistry: $(dockerRegistryServiceConnection)
+    repository: $(imageRepository)
+    Dockerfile: $(dockerfileName)
+    command: 'run'
+    arguments: 'python submit_inference_job.py'

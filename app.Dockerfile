@@ -6,4 +6,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "submit_inference_job.py"]
+#CMD ["python", "submit_inference_job.py"]
