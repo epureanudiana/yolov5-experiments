@@ -17,6 +17,7 @@ steps:
   - task: Docker@2
     displayName: "Build"
     inputs:
+      containerRegistry: "dockerhub_connection"
       repository: 'epureanudiana/app'
       Dockerfile: app.Dockerfile
       buildContent: .
@@ -25,6 +26,7 @@ steps:
   - task: Docker@2
     displayName: "Push"
     inputs:
+      containerRegistry: "dockerhub_connection"
       repository: 'epureanudiana/app'
       Dockerfile: app.Dockerfile
       command: "push"
