@@ -39,4 +39,4 @@ jobs:
           repository: $(imageRepository)
           Dockerfile: $(dockerfileName)
           command: 'run'
-          arguments: 'python submit_inference_job.py'
+          arguments: 'python app/submit_inference_job.py'
