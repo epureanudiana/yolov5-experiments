@@ -21,8 +21,7 @@ stages:
               command: 'build'
               Dockerfile: 'app.Dockerfile'
               buildContent: .
-              tags: |
-                latest
+              tags: "latest"
 
   - stage: Test
     dependsOn: Build
@@ -64,5 +63,4 @@ stages:
               repository: $(dockerhub_repository)
               command: 'push'
               Dockerfile: 'app.Dockerfile'
-              tags: |
-                latest
+              tags: "latest"
