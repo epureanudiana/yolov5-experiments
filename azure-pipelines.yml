@@ -20,6 +20,7 @@ stages:
               repository: $(dockerhub_repository)
               command: 'build'
               Dockerfile: 'app.Dockerfile'
+              buildContent: .
               tags: |
                 latest
 
