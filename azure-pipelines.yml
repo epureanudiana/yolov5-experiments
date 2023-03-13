@@ -41,7 +41,7 @@ stages:
       - job: Approval
         displayName: 'Manual Approval'
         steps:
-          - task: ManualIntervention@1
+          - task: ManualIntervention@8
             displayName: 'Manual Intervention'
             inputs:
               instructions: 'Please review and approve the deployment.'
