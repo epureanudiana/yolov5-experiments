@@ -23,6 +23,16 @@ stages:
               buildContent: .
               tags: "latest"
 
+          - task: Docker@2
+            displayName: 'Push Docker image to Docker Hub'
+            inputs:
+              containerRegistry: $(dockerhub_connection)
+              repository: $(dockerhub_repository)
+              command: 'push'
+              Dockerfile: app.Dockerfile
+              tags: "latest"
+
+
   - stage: Test
     dependsOn: Build
     displayName: 'Test Docker image'
