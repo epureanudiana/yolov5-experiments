@@ -71,6 +71,7 @@ stages:
             inputs:
               containerRegistry: $(dockerhub_connection)
               repository: $(dockerhub_repository)
+              imageName: '$(dockerhub_repository):latest'git
               command: 'pull'
               tags: "latest"
           - task: Docker@2
