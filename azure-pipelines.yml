@@ -19,7 +19,7 @@ stages:
               containerRegistry: $(dockerhub_connection)
               repository: $(dockerhub_repository)
               command: 'build'
-              Dockerfile: 'app.Dockerfile'
+              Dockerfile: app.Dockerfile
               buildContent: .
               tags: "latest"
 
@@ -62,5 +62,5 @@ stages:
               containerRegistry: $(dockerhub_connection)
               repository: $(dockerhub_repository)
               command: 'push'
-              Dockerfile: 'app.Dockerfile'
+              Dockerfile: app.Dockerfile
               tags: "latest"
