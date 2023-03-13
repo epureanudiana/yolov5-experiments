@@ -35,8 +35,21 @@ stages:
               echo 'Running unit tests...'
             displayName: 'Run unit tests'
 
+  - stage: Other
+    displayName: 'Other'
+    jobs:
+      - job: Approval
+        displayName: 'Manual Approval'
+        steps:
+          - task: ManualIntervention@1
+            displayName: 'Manual Intervention'
+            inputs:
+              instructions: 'Please review and approve the deployment.'
+
   - stage: Deploy
-    dependsOn: Test
+    dependsOn:
+      - Test
+      - Other
     displayName: 'Deploy Docker image'
     jobs:
       - job: Deploy
