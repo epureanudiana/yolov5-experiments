@@ -1,39 +1,53 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-# build docker image
-# push docker image to docker hub
-
 variables:
-  imageRepository: 'epureanudiana/app'
-  dockerFileName: app.Dockerfile
-  dockerRegistryServiceConnection: "dockerhub_connection"
-
-
-trigger:
-- main
+  # Docker Hub credentials
+  dockerhub_connection: 'dockerhub_connection'
+  dockerhub_repository: 'epureanudiana/app'
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-  - task: Docker@2
-    displayName: "Build"
-    inputs:
-      containerRegistry: dockerRegistryServiceConnection
-      repository: $(imageRepository)
-      Dockerfile: $(dockerFileName)
-      buildContent: .
-      tags: "latest"
+stages:
+  - stage: Build
+    displayName: 'Build Docker image'
+    jobs:
+      - job: Build
+        displayName: 'Build'
+        steps:
+          - task: Docker@2
+            displayName: 'Build Docker image'
+            inputs:
+              containerRegistry: $(dockerhub_connection)
+              repository: $(dockerhub_repository)
+              command: 'build'
+              Dockerfile: './Dockerfile'
+              tags: |
+                latest
 
-  - task: Docker@2
-    displayName: "Push"
-    inputs:
-      containerRegistry: dockerRegistryServiceConnection
-      repository: $(imageRepository)
-      Dockerfile: $(dockerFileName)
-      command: "push"
-      tags: "latest"
+  - stage: Test
+    dependsOn: Build
+    displayName: 'Test Docker image'
+    jobs:
+      - job: Test
+        displayName: 'Test'
+        steps:
+          - script: |
+              # Run unit tests here
+              echo 'Running unit tests...'
+            displayName: 'Run unit tests'
 
+  - stage: Deploy
+    dependsOn: Test
+    displayName: 'Deploy Docker image'
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy'
+        steps:
+          - task: Docker@2
+            displayName: 'Push Docker image to Docker Hub'
+            inputs:
+              containerRegistry: $(dockerhub_connection)
+              repository: $(dockerhub_repository)
+              command: 'push'
+              Dockerfile: './Dockerfile'
+              tags: |
+                latest
