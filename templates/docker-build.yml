@@ -32,11 +32,10 @@ Overall, templates can be used to simplify and reuse complex or repetitive parts
 parameters:
 - name: dockerhub_connection
   type: string
-  default: ''
+
 
 - name: dockerhub_repository
   type: string
-  default: ''
 
 steps:
 - task: Docker@2
