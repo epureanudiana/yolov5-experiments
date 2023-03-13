@@ -62,6 +62,6 @@ stages:
               containerRegistry: $(dockerhub_connection)
               repository: $(dockerhub_repository)
               command: 'push'
-              Dockerfile: './Dockerfile'
+              Dockerfile: 'app.Dockerfile'
               tags: |
                 latest
