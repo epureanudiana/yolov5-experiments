@@ -61,16 +61,23 @@ stages:
     dependsOn:
       - Test
       - Test2
-    displayName: 'Deploy Docker image'
+    displayName: 'Run'
     jobs:
-      - job: Deploy
-        displayName: 'Deploy'
+      - job: Pull
+        displayName: 'Pull'
         steps:
           - task: Docker@2
-            displayName: 'Push Docker image to Docker Hub'
+            displayName: 'Pull Docker image from Docker Hub'
             inputs:
               containerRegistry: $(dockerhub_connection)
               repository: $(dockerhub_repository)
-              command: 'push'
-              Dockerfile: app.Dockerfile
+              command: 'pull'
+              tags: "latest"
+          - task: Docker@2
+            displayName: 'Run Docker container'
+            inputs:
+              containerRegistry: $(dockerhub_connection)
+              repository: $(dockerhub_repository)
+              command: 'run'
+              arguments: '-d -p 80:80 python submit_inference_script.py'
               tags: "latest"
