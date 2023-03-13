@@ -7,7 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: Build and Push
+  - stage: Build_and_Push
     displayName: 'Build and Push Docker image'
     jobs:
       - job: Build and Push
