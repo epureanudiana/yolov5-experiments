@@ -7,10 +7,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - template: templates/docker-build.yml
-    parameters:
-      dockerhub_connection: $(dockerhub_connection)
-      dockerhub_repository: $(dockerhub_repository)
+  - stage: Build and Push
+    displayName: 'Build and Push Docker image'
+    jobs:
+      - job: Build and Push
+        displayName: 'Build and Push'
+        steps:
+          - template: templates/docker-build.yml
+            parameters:
+              dockerhub_connection: $(dockerhub_connection)
+              dockerhub_repository: $(dockerhub_repository)
 
   - stage: Test
     dependsOn: Build
