@@ -15,7 +15,7 @@ jobs:
       - script: echo Hello world!
         displayName: Say hello
   - job: Build
-    displayName: 'Build'
+    displayName: 'Build 2'
     pool:
       vmImage: 'macOS-latest'
     steps:
