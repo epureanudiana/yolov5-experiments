@@ -1,45 +1,62 @@
 trigger:
   - main
+stages:
+  - stage: First_stage
+    displayName: "First Stage"
+    jobs:
+      - job: Build
+        displayName: 'Build'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Bash@3
+            displayName: 'Print Hello, World!'
+            inputs:
+              targetType: 'inline'
+              script: 'echo "Hello, World!"'
+          - script: echo Hello world!
+            displayName: Say hello
+      - job: Build_2
+        displayName: 'Build 2'
+        pool:
+          vmImage: 'macOS-latest'
+        steps:
+          - task: Bash@3
+            displayName: 'Print Hello, World!'
+            inputs:
+              targetType: 'inline'
+              script: 'echo "Hello, World!"'
+          - script: echo Hello world!
+            displayName: Say hello
 
-jobs:
-  - job: Build
-    displayName: 'Build'
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-      - task: Bash@3
-        displayName: 'Print Hello, World!'
-        inputs:
-          targetType: 'inline'
-          script: 'echo "Hello, World!"'
-      - script: echo Hello world!
-        displayName: Say hello
-  - job: Build_2
-    displayName: 'Build 2'
-    pool:
-      vmImage: 'macOS-latest'
-    steps:
-      - task: Bash@3
-        displayName: 'Print Hello, World!'
-        inputs:
-          targetType: 'inline'
-          script: 'echo "Hello, World!"'
-      - script: echo Hello world!
-        displayName: Say hello
+      - stage: Second_stage
+        displayName: "Second Stage"
+        jobs:
+          - job: Build
+            displayName: 'Build'
+            pool:
+              vmImage: 'ubuntu-latest'
+            steps:
+              - task: Bash@3
+                displayName: 'Print Hello, World!'
+                inputs:
+                  targetType: 'inline'
+                  script: 'echo "Hello, World!"'
+              - script: echo Hello world!
+                displayName: Say hello
+          - job: Build_2
+            displayName: 'Build 2'
+            pool:
+              vmImage: 'macOS-latest'
+            steps:
+              - task: Bash@3
+                displayName: 'Print Hello, World!'
+                inputs:
+                  targetType: 'inline'
+                  script: 'echo "Hello, World!"'
+              - script: echo Hello world!
+                displayName: Say hello
 
-  - job: Build_3
-    displayName: 'Build 3'
-    pool:
-      vmImage: 'macOS-latest'
-    dependsOn:
-      - Build
-      - Build_2
-    steps:
-      - task: Bash@3
-        displayName: 'Print Hello, World!'
-        inputs:
-          targetType: 'inline'
-          script: 'echo "Hello, World!"'
-      - script: echo Hello world!
-        displayName: Say hello
+
+
 
