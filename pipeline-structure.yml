@@ -1,20 +1,29 @@
 trigger:
   - main
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-
 jobs:
   - job: Build
     displayName: 'Build'
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
       - task: Bash@3
         displayName: 'Print Hello, World!'
         inputs:
           targetType: 'inline'
           script: 'echo "Hello, World!"'
-
+      - script: echo Hello world!
+        displayName: Say hello
+  - job: Build
+    displayName: 'Build'
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+      - task: Bash@3
+        displayName: 'Print Hello, World!'
+        inputs:
+          targetType: 'inline'
+          script: 'echo "Hello, World!"'
       - script: echo Hello world!
         displayName: Say hello
 
