@@ -7,48 +7,79 @@ trigger:
   - main
 
 stages:
-  - stage: first_stage
-    displayName: "Fist stage"
-    jobs:
-      - job: build_push
-        displayName: "Build and Push on linux "
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: Bash@3
-            displayName: 'Build Docker image'
-            inputs:
-              targetType: 'inline'
-              script: |
-                echo 'Building Docker image...'
-                sleep 2
-                echo 'Docker image built!'
+- stage: build
+  jobs:
+  - job: run_tests
+    displayName: 'Run unit tests'
+    steps:
+    - script: |
+        echo 'Running unit tests...'
+        sleep 2
+        echo 'Unit tests passed!'
 
-          - script: |
-              echo 'Pushing Docker image to Docker Hub...'
-              sleep 2
-              echo 'Docker image pushed!'
-            displayName: 'Push Docker image to Docker Hub'
+  - job: build_images
+    displayName: 'Build Docker images'
+    steps:
+    - script: |
+        echo 'Building Docker images...'
+        sleep 2
+        echo 'Docker images built!'
 
-  - stage: second_stage
-    displayName: "Second stage"
-    jobs:
-      - job: build_push
-        displayName: "Build and Push on linux "
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: Bash@3
-            displayName: 'Build Docker image'
-            inputs:
-              targetType: 'inline'
-              script: |
-                echo 'Building Docker image...'
-                sleep 2
-                echo 'Docker image built!'
+- stage: pre_deployment
+  dependsOn: build
+  jobs:
+  - job: push_images
+    displayName: 'Push Docker images to a container registry'
+    steps:
+    - script: |
+        echo 'Pushing Docker images to a container registry...'
+        sleep 2
+        echo 'Docker images pushed to the container registry!'
 
-          - script: |
-              echo 'Pushing Docker image to Docker Hub...'
-              sleep 2
-              echo 'Docker image pushed!'
-            displayName: 'Push Docker image to Docker Hub'
+  - job: setup_environment
+    displayName: 'Set up the environment'
+    steps:
+    - script: |
+        echo 'Setting up the environment...'
+        sleep 2
+        echo 'Environment set up!'
+
+- stage: security
+  jobs:
+  - job: security_code_analysis
+    displayName: 'Perform security code analysis'
+    steps:
+    - script: |
+        echo 'Performing security code analysis...'
+        sleep 2
+        echo 'Security code analysis completed!'
+
+  - job: generate_security_report
+    displayName: 'Generate a security report'
+    steps:
+    - script: |
+        echo 'Generating a security report...'
+        sleep 2
+        echo 'Security report generated!'
+
+- stage: deployment
+  dependsOn:
+  - pre_deployment,
+  - security
+  jobs:
+  - job: deploy_to_staging
+    displayName: 'Deploy the application to the staging environment'
+    steps:
+    - script: |
+        echo 'Deploying the application to the staging environment...'
+        sleep 2
+        echo 'Application deployed to the staging environment!'
+
+  - job: run_integration_tests
+    displayName: 'Run integration tests'
+    steps:
+    - script: |
+        echo 'Running integration tests...'
+        sleep 2
+        echo 'Integration tests passed!'
+
