@@ -3,82 +3,33 @@ variables:
   dockerhub_connection: 'dockerhub_connection'
   dockerhub_repository: 'epureanudiana/app'
 
+trigger:
+  - main
+
 pool:
   vmImage: 'ubuntu-latest'
 
-stages:
-  - stage: Build
+steps:
+  - task: Docker@2
     displayName: 'Build Docker image'
-    jobs:
-      - job: Build
-        displayName: 'Build'
-        steps:
-          - task: Docker@2
-            displayName: 'Build Docker image'
-            inputs:
-              containerRegistry: $(dockerhub_connection)
-              repository: $(dockerhub_repository)
-              command: 'build'
-              Dockerfile: app.Dockerfile
-              buildContent: .
-              tags: "latest"
-
-          - task: Docker@2
-            displayName: 'Push Docker image to Docker Hub'
-            inputs:
-              containerRegistry: $(dockerhub_connection)
-              repository: $(dockerhub_repository)
-              command: 'push'
-              Dockerfile: app.Dockerfile
-              tags: "latest"
+    inputs:
+      containerRegistry: $(dockerhub_connection)
+      repository: $(dockerhub_repository)
+      command: 'build'
+      Dockerfile: app.Dockerfile
+      buildContent: .
+      tags: "latest"
 
 
-  - stage: Test
-    dependsOn: Build
-    displayName: 'Test Docker image'
-    jobs:
-      - job: Test
-        displayName: 'Test'
-        steps:
-          - script: |
-              # Run unit tests here
-              echo 'Running unit tests...'
-            displayName: 'Run unit tests'
+  - task: Docker@2
+    displayName: 'Push Docker image to Docker Hub'
+    inputs:
+      containerRegistry: $(dockerhub_connection)
+      repository: $(dockerhub_repository)
+      command: 'push'
+      Dockerfile: app.Dockerfile
+      tags: "latest"
 
-  - stage: Test2
-    dependsOn: Build
-    displayName: 'Test Docker image'
-    jobs:
-      - job: Test
-        displayName: 'Test'
-        steps:
-          - script: |
-              # Run unit tests here
-              echo 'Running unit tests...'
-            displayName: 'Run unit tests'
+  - script:
 
-  - stage: Deploy
-    dependsOn:
-      - Test
-      - Test2
-    displayName: 'Run'
-    jobs:
-      - job: Pull
-        displayName: 'Pull'
-        steps:
-          - task: Docker@2
-            displayName: 'Pull Docker image from Docker Hub'
-            inputs:
-              containerRegistry: $(dockerhub_connection)
-              repository: $(dockerhub_repository)
-              imageName: '$(dockerhub_repository):latest'git
-              command: 'pull'
-              tags: "latest"
-          - task: Docker@2
-            displayName: 'Run Docker container'
-            inputs:
-              containerRegistry: $(dockerhub_connection)
-              repository: $(dockerhub_repository)
-              command: 'run'
-              arguments: '-d -p 80:80 python submit_inference_script.py'
-              tags: "latest"
+
