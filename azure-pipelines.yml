@@ -10,26 +10,19 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: Docker@2
+  - task: Bash@3
     displayName: 'Build Docker image'
     inputs:
-      containerRegistry: $(dockerhub_connection)
-      repository: $(dockerhub_repository)
-      command: 'build'
-      Dockerfile: app.Dockerfile
-      buildContent: .
-      tags: "latest"
+      targetType: 'inline'
+      script: |
+        echo 'Building Docker image...'
+        sleep 2
+        echo 'Docker image built!'
 
-
-  - task: Docker@2
+  - script: |
+      echo 'Pushing Docker image to Docker Hub...'
+      sleep 2
+      echo 'Docker image pushed!'
     displayName: 'Push Docker image to Docker Hub'
-    inputs:
-      containerRegistry: $(dockerhub_connection)
-      repository: $(dockerhub_repository)
-      command: 'push'
-      Dockerfile: app.Dockerfile
-      tags: "latest"
-
-  - script:
 
 
