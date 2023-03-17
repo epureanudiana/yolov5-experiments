@@ -64,7 +64,7 @@ stages:
 
 - stage: deployment
   dependsOn:
-  - pre_deployment,
+  - pre_deployment
   - security
   jobs:
   - job: deploy_to_staging
