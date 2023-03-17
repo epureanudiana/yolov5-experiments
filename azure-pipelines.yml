@@ -9,20 +9,23 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-  - task: Bash@3
-    displayName: 'Build Docker image'
-    inputs:
-      targetType: 'inline'
-      script: |
-        echo 'Building Docker image...'
-        sleep 2
-        echo 'Docker image built!'
+jobs:
+  - job: build_push
+    displayName: "Build and Push"
+    steps:
+      - task: Bash@3
+        displayName: 'Build Docker image'
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo 'Building Docker image...'
+            sleep 2
+            echo 'Docker image built!'
 
-  - script: |
-      echo 'Pushing Docker image to Docker Hub...'
-      sleep 2
-      echo 'Docker image pushed!'
-    displayName: 'Push Docker image to Docker Hub'
+      - script: |
+          echo 'Pushing Docker image to Docker Hub...'
+          sleep 2
+          echo 'Docker image pushed!'
+        displayName: 'Push Docker image to Docker Hub'
 
 
